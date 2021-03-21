@@ -5,10 +5,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link
-            href={`https://unpkg.com/prismjs@0.0.1/themes/prism-okaidia.css`}
-            rel="stylesheet"
-          />
+          <link rel="canonical" href="https://adamrichardson.dev" />
         </Head>
         <body className="bg-gray-900">
           <Main />

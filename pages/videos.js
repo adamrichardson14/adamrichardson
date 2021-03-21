@@ -48,6 +48,7 @@ export default function Code({ stats, videos }) {
                     src={video.snippet.thumbnails.medium.url}
                     width={320}
                     height={180}
+                    alt={video.snippet.title}
                     className="absolute rounded-md opacity-50"
                   />
                 </div>

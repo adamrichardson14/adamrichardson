@@ -30,7 +30,13 @@ export default function BlogLayout({ children, frontMatter }) {
         </div>
         {frontMatter.image && (
           <div className="mt-4">
-            <Image src={frontMatter.image} width={610} height={400} className="object-cover" />
+            <Image
+              src={frontMatter.image}
+              alt={frontMatter.title}
+              width={610}
+              height={400}
+              className="object-cover"
+            />
           </div>
         )}
 
