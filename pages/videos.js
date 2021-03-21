@@ -1,10 +1,10 @@
-import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
 
 import OGContainer from "../components/OGContainer";
 import Wrapper from "../components/Wrapper";
 import YoutubeStats from "../components/YoutubeStats";
+import { fetchData } from "../lib/utlis";
 
 export default function Code({ stats, videos }) {
   const [searchValue, setSearchValue] = useState("");
@@ -66,13 +66,26 @@ export default function Code({ stats, videos }) {
 }
 
 export async function getStaticProps() {
-  const res = await axios(`${process.env.NEXT_PUBLIC_URL}/api/youtube`);
-  const youtubeData = await res.data;
+  const { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } = process.env;
+  const statisticsURL = `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
+  const uploadsURL = `https://youtube.googleapis.com/youtube/v3/search?part=id%2Csnippet&channelId=${YOUTUBE_CHANNEL_ID}&type=video&maxResults=100&key=${YOUTUBE_API_KEY}`;
+
+  async function getData() {
+    const stats = fetchData(statisticsURL);
+    const uploadData = fetchData(uploadsURL);
+
+    return {
+      stats: await stats,
+      uploadData: await uploadData,
+    };
+  }
+
+  const { stats, uploadData } = await getData();
+
   return {
-    revalidate: 86400,
     props: {
-      stats: youtubeData.stats.items[0].statistics,
-      videos: youtubeData.uploads.items,
+      stats: stats.items[0].statistics,
+      videos: uploadData.items,
     },
   };
 }
