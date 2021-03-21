@@ -1,14 +1,16 @@
 import { format, parseISO } from "date-fns";
 import Image from "next/image";
 
-import Container from "../components/Container";
+import OGContainer from "./OGContainer";
 
 export default function BlogLayout({ children, frontMatter }) {
   return (
-    <Container
+    <OGContainer
       title={`${frontMatter.title} – Adam Richardson`}
       description={frontMatter.description}
       publishedAt={new Date(frontMatter.published).toISOString()}
+      image={frontMatter.image ? frontMatter.image : "/images/defaultImage.png"}
+      date={new Date(frontMatter.published).toISOString()}
       type="article">
       <article className="flex flex-col justify-center items-start mb-16 w-full mt-4">
         <h1 className="font-bold text-3xl md:text-5xl tracking-tight text-gray-100">
@@ -32,6 +34,6 @@ export default function BlogLayout({ children, frontMatter }) {
 
         <div className="prose prose-dark max-w-none w-full mt-4">{children}</div>
       </article>
-    </Container>
+    </OGContainer>
   );
 }

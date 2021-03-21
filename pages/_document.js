@@ -4,7 +4,12 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head></Head>
+        <Head>
+          <link
+            href={`https://unpkg.com/prismjs@0.0.1/themes/prism-okaidia.css`}
+            rel="stylesheet"
+          />
+        </Head>
         <body className="bg-gray-900">
           <Main />
           <NextScript />

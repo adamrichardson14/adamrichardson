@@ -1,4 +1,9 @@
+import OGContainer from "../components/OGContainer";
 import Wrapper from "../components/Wrapper";
 export default function Home() {
-  return <Wrapper></Wrapper>;
+  return (
+    <Wrapper>
+      <OGContainer></OGContainer>
+    </Wrapper>
+  );
 }
