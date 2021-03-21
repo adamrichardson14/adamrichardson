@@ -54,7 +54,7 @@ export default function Code({ stats, videos }) {
                 </div>
                 <div className="col-span-3 sm:col-span-2">
                   <a href={`https://youtube.com/watch?v=${video.id.videoId}`} target="none">
-                    <h3 className="text-gray-100 text-xl">{video.snippet.title}</h3>
+                    <h2 className="text-gray-100 text-xl">{video.snippet.title}</h2>
                     <p className="text-gray-400">{video.snippet.description}</p>
                   </a>
                 </div>

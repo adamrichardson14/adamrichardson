@@ -4,9 +4,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>
-          <link rel="canonical" href="https://adamrichardson.dev" />
-        </Head>
+        <Head></Head>
         <body className="bg-gray-900">
           <Main />
           <NextScript />
