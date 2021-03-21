@@ -6,7 +6,7 @@ import { getAllFilesFrontMatter } from "../lib/mdx";
 export default function Code({ posts }) {
   return (
     <Wrapper>
-      <OGContainer>
+      <OGContainer description="The Blog: Occasional educational content. Predominantly ramblings.">
         <div>
           <div className="text-gray-300 text-lg">
             <h1>The Blog: Occasional educational content. Predominantly ramblings.</h1>
