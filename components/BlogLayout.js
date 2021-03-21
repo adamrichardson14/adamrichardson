@@ -9,7 +9,9 @@ export default function BlogLayout({ children, frontMatter }) {
       title={`${frontMatter.title} – Adam Richardson`}
       description={frontMatter.description}
       publishedAt={new Date(frontMatter.published).toISOString()}
-      image={frontMatter.image ? frontMatter.image : "/images/defaultImage.png"}
+      image={
+        frontMatter.image ? frontMatter.image : "https://adamrichardson.dev/images/defaultImage.png"
+      }
       date={new Date(frontMatter.published).toISOString()}
       type="article">
       <article className="flex flex-col justify-center items-start mb-16 w-full mt-4">

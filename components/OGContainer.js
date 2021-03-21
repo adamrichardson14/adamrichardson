@@ -10,7 +10,7 @@ export default function Container(props) {
     title: "Adam Richardson | Fullstack Developer & Course Creator",
     description: `Full Stack Developer, Course creator.`,
     type: "website",
-    image: "/images/defaultImage.png",
+    image: "https://adamrichardson.dev/images/defaultImage.png",
     ...customMeta,
   };
 
