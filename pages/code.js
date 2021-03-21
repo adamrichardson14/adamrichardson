@@ -1,9 +1,16 @@
+import { useState } from "react";
+
 import OGContainer from "../components/OGContainer";
 import PostListItem from "../components/PostListItem";
 import Wrapper from "../components/Wrapper";
 import { getAllFilesFrontMatter } from "../lib/mdx";
 
 export default function Code({ snippets }) {
+  const [searchValue, setSearchValue] = useState("");
+  const codeSnippets = snippets
+    .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
+    .filter((snippet) => snippet.title.toLowerCase().includes(searchValue.toLowerCase()));
+
   return (
     <Wrapper>
       <OGContainer>
@@ -14,8 +21,23 @@ export default function Code({ snippets }) {
               easy access.
             </h1>
           </div>
-          {snippets &&
-            snippets.map((snippet) => (
+          <div className="mt-8 mb-2">
+            <label className="text-gray-300 text-sm" htmlFor="searchCode">
+              Search Code Snippets
+            </label>
+            <div>
+              <input
+                style={{ caretColor: "white" }}
+                id="codeSnippets"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="mt-1 text-gray-200 tracking-wider bg-gray-800 h-10 px-3 shadow-sm focus:ring-indigo-500 focus:outline-none focus:border-gray-400 block w-full border-gray-700 rounded-md"
+                type="text"
+              />
+            </div>
+          </div>
+          {codeSnippets &&
+            codeSnippets.map((snippet) => (
               <PostListItem type="code" key={snippet.slug} data={snippet} />
             ))}
         </div>

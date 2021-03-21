@@ -14,8 +14,6 @@ export default function Container(props) {
     ...customMeta,
   };
 
-  console.log(customMeta);
-
   return (
     <>
       <Head>

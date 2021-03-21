@@ -1,0 +1,296 @@
+---
+title: 'React Toast Component and Custom Hook using Tailwindcss.'
+description: 'This blog post is about creating a custom toast component that works with tailwindcss.'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-03-20'
+image: 'https://images.unsplash.com/photo-1601750683192-72f3ab28ece9?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9hc3R8ZW58MHx8MHw'
+---
+
+Toasts are basically just notifications. When you have a complex application or 
+you need a lot of input from your users, giving them feedback on their actions
+is really important to their experience. Toasts are a great way to do this and 
+here is a simple integration into a React application.
+
+The first thing you need to do is setup a Global Toast Context. We're using `useReducer` 
+with this context and you can see there is two actions, "ADD_TOAST" and "DELETE_TOAST". We 
+can then easily add new toasts, and delete toasts from anywhere in our application. We're
+going to create a custom hook so that we don't have to use `dispatch()` directly.
+
+```js
+// context/ToastContext.js
+import { createContext, useReducer, useContext } from 'react';
+
+const ToastStateContext = createContext({ toasts: [] });
+const ToastDispatchContext = createContext(null);
+
+function ToastReducer(state, action) {
+  switch (action.type) {
+    case 'ADD_TOAST': {
+      return {
+        ...state,
+        toasts: [...state.toasts, action.toast],
+      };
+    }
+    case 'DELETE_TOAST': {
+      const updatedToasts = state.toasts.filter((e) => e.id != action.id);
+      return {
+        ...state,
+        toasts: updatedToasts,
+      };
+    }
+    default: {
+      throw new Error('unhandled action');
+    }
+  }
+}
+
+export function ToastProvider({ children }) {
+  const [state, dispatch] = useReducer(ToastReducer, {
+    toasts: [],
+  });
+
+  return (
+    <ToastStateContext.Provider value={state}>
+      <ToastDispatchContext.Provider value={dispatch}>
+        {children}
+      </ToastDispatchContext.Provider>
+    </ToastStateContext.Provider>
+  );
+}
+
+export const useToastStateContext = () => useContext(ToastStateContext);
+export const useToastDispatchContext = () => useContext(ToastDispatchContext);
+```
+
+We're now going to create two components. A Toast container that will be at 
+the root of our application so that we can display these anywhere. We're also going to 
+create a Toast component which is what will be displayed inside the Toast Container.
+
+### Toast Component
+
+As you can see, this component is taking in a type and a message and it's configured 
+to take in two types right now. Success and Error.
+```jsx
+// components/Toast.jsx
+import { useToastDispatchContext } from '../context/ToastContext';
+export default function Toast({ type, message, id }) {
+  const dispatch = useToastDispatchContext();
+  return (
+    <>
+      {type == 'success' && (
+        <div className="rounded-md bg-green-50 p-4 m-3">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg
+                className="h-5 w-5 text-green-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-green-800">{message}</p>
+            </div>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  onClick={() => {
+                    dispatch({ type: 'DELETE_TOAST', id });
+                  }}
+                  className="inline-flex bg-green-50 rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">
+                  <span className="sr-only">Dismiss</span>
+
+                  <svg
+                    className="h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true">
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {type == 'error' && (
+        <div className="rounded-md bg-red-50 p-4 m-3">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg
+                class="h-5 w-5 text-red-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-red-800">{message}</p>
+            </div>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  onClick={() => {
+                    dispatch({ type: 'DELETE_TOAST', id });
+                  }}
+                  className="inline-flex bg-red-50 rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-red-600">
+                  <span className="sr-only">Dismiss</span>
+
+                  <svg
+                    className="h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true">
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+```
+
+### Toast Container
+
+The toast container is positioned absolute and will live at the top of our application.
+
+```jsx
+// components/ToastContainer.jsx
+
+import Toast from './Toast';
+import { useToastStateContext } from '../context/ToastContext';
+
+export default function ToastContainer() {
+  const { toasts } = useToastStateContext();
+
+  return (
+    <div className="absolute bottom-10 w-full z-50">
+      <div className="max-w-xl mx-auto">
+        {toasts &&
+          toasts.map((toast) => (
+            <Toast
+              id={toast.id}
+              key={toast.id}
+              type={toast.type}
+              message={toast.message}
+            />
+          ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### Bringing it together
+
+We're now going to bring all this logic together so that we can use the Toast notifications
+within our application. This is a Next.js application so we're adding our logic to the _app.js file.
+
+```jsx
+// _app.js
+
+import 'tailwindcss/tailwind.css';
+import ToastContainer from '../components/ToastContainer';
+import { ToastProvider } from '../context/ToastContext';
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <ToastProvider>
+        <Component {...pageProps} />
+        <ToastContainer />
+      </ToastProvider>
+    </>
+  );
+}
+
+export default MyApp;
+```
+
+### The custom hook.
+
+The custom hook will be how we send off notifications. You can see we export a single function from the hook, 
+which is `toast()`. We can now import this anywhere within our application and send off toast notifications.
+
+```js
+// hooks/useToast.js
+
+import { useToastDispatchContext } from '../context/ToastContext';
+
+export function useToast(delay) {
+  const dispatch = useToastDispatchContext();
+
+  function toast(type, message) {
+    const id = Math.random().toString(36).substr(2, 9);
+    dispatch({
+      type: 'ADD_TOAST',
+      toast: {
+        type,
+        message,
+        id,
+      },
+    });
+
+    setTimeout(() => {
+      dispatch({ type: 'DELETE_TOAST', id });
+    }, delay);
+  }
+
+  return toast;
+}
+```
+
+
+### Using the toast
+
+This example is using the toast with a form submission. If you noticed were passing
+a delay to the useToast hook, which is 4 seconds here. This will mean the Toast is
+deleted after 4 seconds.
+
+```jsx
+//index.js
+import { useToast } from '../hooks/useToast';
+
+export default function Home() {
+  const { register, handleSubmit, errors, reset } = useForm();
+  const toast = useToast(4000);
+
+  const router = useRouter();
+  async function onSubmitForm(values) {
+    try {
+      const response = await axios(config);
+      console.log(response);
+      if (response.status == 200) {
+        toast('success', 'You have successfully submitted the form');
+      }
+    } catch (err) {
+      toast('error', 'Something went wrong, there was an error.');
+    }
+  }
+```
