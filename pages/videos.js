@@ -83,6 +83,7 @@ export async function getStaticProps() {
   const { stats, uploadData } = await getData();
 
   return {
+    revalidate: 86400,
     props: {
       stats: stats.items[0].statistics,
       videos: uploadData.items,

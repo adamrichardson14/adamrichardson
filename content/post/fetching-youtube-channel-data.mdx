@@ -1,0 +1,306 @@
+---
+title: 'Fetching Youtube Channel Information and Videos using Youtube API.'
+description: 'Learn how to fetch Youtube channel information and all uploads with the Youtube API.'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-03-21'
+image: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw'
+---
+
+I've recently added Youtube information to the website you are on right now. Here's what that looks Like.
+
+<MDXImage src="/images/youtubestats.png" />
+
+As you can see it's relatively simple and public information. The fact that it's public information
+means that we don't need to authenticate our account, we just need an API from Google.
+
+* Head over to `https://console.developers.google.com` and create a new application. 
+* Head to library and enable the Youtube API. 
+* Go to credentials and create a new API Key. 
+* Copy the API key that you need. 
+
+I'm using Next.js for this website so I've stored the API key in an environment variable in a 
+file called `.env`. Whatever tech stack you're using, make sure this API key is not publicly accessible.
+
+In order to get the statistics and Youtube videos, we need to make two calls to the Youtube API. 
+
+I've created a function which will use axios to handle the fetching. 
+
+```bash
+npm i axios
+```
+
+```js
+// lib/utils
+
+import axios from "axios";
+
+export const fetchData = async (url) => {
+  const response = await axios(url);
+  const { data } = response;
+
+  return data;
+};
+```
+
+We now need to create the URLs for the data fetching. I've also created an environment variable which contains
+my Youtube channel ID. This value isn't private it's just because this Blog is open source and it will allow
+people to easily get up and running.
+
+Here are the two rather long URLs that we will use to fetch the data
+
+```js
+const statisticsURL = `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
+  const uploadsURL = `https://youtube.googleapis.com/youtube/v3/search?part=id%2Csnippet&channelId=${YOUTUBE_CHANNEL_ID}&type=video&maxResults=100&key=${YOUTUBE_API_KEY}`;
+```
+
+While using Next.js, I'm choosing to statically generate the website for performance and SEO reasons. 
+I could absolutely fetch this data on the client side, however I'm choosing to Incrementally refresh this data.
+
+We're going to use `getStaticProps()` in order to do this, while returning `revalidate: 86400` which is one day in seconds. 
+This means the data will be re-fetched every 24 hours so it's relatively up to date. I could make this shorter if I wanted it 
+to be more accurate at the time.
+
+```js
+export async function getStaticProps() {
+  const { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } = process.env;
+  const statisticsURL = `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
+  const uploadsURL = `https://youtube.googleapis.com/youtube/v3/search?part=id%2Csnippet&channelId=${YOUTUBE_CHANNEL_ID}&type=video&maxResults=100&key=${YOUTUBE_API_KEY}`;
+
+  return {
+    revalidate: 86400,
+    props: {
+      stats: stats,
+      videos: uploadData,
+    },
+  };
+}
+```
+
+The final thing we need to do within `getStaticProps()` is to actually make the data call. 
+We're making two data calls but I don't want to wait for one promise to resolve, before making the second 
+data call. This is really simple to achieve. 
+
+```js
+async function getData() {
+    const stats = fetchData(statisticsURL);
+    const uploadData = fetchData(uploadsURL);
+
+    return {
+      stats: await stats,
+      uploadData: await uploadData,
+    };
+  }
+  const { stats, uploadData } = await getData();
+```
+
+It may look a little bit strange but both the stats and the uploadData data fetches will run in parallel
+meaning that we don't have to wait for one to finish before starting the next.
+
+Here is the completed `getStaticProps()` call. This happens on the server so we don't need to worry about the API
+key being exposed to the client.
+
+```js
+// pages/video.js
+
+export async function getStaticProps() {
+  const { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } = process.env;
+  const statisticsURL = `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
+  const uploadsURL = `https://youtube.googleapis.com/youtube/v3/search?part=id%2Csnippet&channelId=${YOUTUBE_CHANNEL_ID}&type=video&maxResults=100&key=${YOUTUBE_API_KEY}`;
+
+  async function getData() {
+    const stats = fetchData(statisticsURL);
+    const uploadData = fetchData(uploadsURL);
+
+    return {
+      stats: await stats,
+      uploadData: await uploadData,
+    };
+  }
+
+  const { stats, uploadData } = await getData();
+
+  return {
+    revalidate: 86400,
+    props: {
+      stats: stats.items[0].statistics,
+      videos: uploadData.items,
+    },
+  };
+}
+```
+
+We now just need to complete our React component in order to display the data. 
+I'm using Tailwindcss to style this website.
+
+### Statistics display
+
+
+```jsx
+// pages/video.js
+
+<YoutubeStats stats={stats} />
+
+// components/YoutubeStats.jsx
+
+export default function YoutubeStats({ stats }) {
+  return (
+    <div>
+      <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="px-4 py-5 bg-gray-800 shadow rounded-md overflow-hidden sm:p-6">
+          <dt className="text-sm font-medium text-gray-400 truncate">Total Subscribers</dt>
+          <dd className="mt-1 text-3xl font-semibold text-gray-200">{stats.subscriberCount}</dd>
+        </div>
+
+        <div className="px-4 py-5 bg-gray-800 shadow rounded-md overflow-hidden sm:p-6">
+          <dt className="text-sm font-medium text-gray-400 truncate">Total Views</dt>
+          <dd className="mt-1 text-3xl font-semibold text-gray-200">{stats.viewCount}</dd>
+        </div>
+
+        <div className="px-4 py-5 bg-gray-800 shadow rounded-md overflow-hidden sm:p-6">
+          <dt className="text-sm font-medium text-gray-400 truncate">Videos Uploaded</dt>
+          <dd className="mt-1 text-3xl font-semibold text-gray-200">{stats.videoCount}</dd>
+        </div>
+      </dl>
+    </div>
+  );
+}
+```
+
+### Video display
+
+```jsx
+// pages/video.js
+
+  {sortedVids &&
+    sortedVids.map((video) => (
+      <div key={video.id.videoId} className="grid grid-cols-3 items-center py-4 gap-4">
+        <div className="hidden sm:col-span-1 sm:flex sm:relative">
+          <Image
+            src={video.snippet.thumbnails.medium.url}
+            width={320}
+            height={180}
+            className="absolute rounded-md opacity-50"
+          />
+        </div>
+        <div className="col-span-3 sm:col-span-2">
+          <a href={`https://youtube.com/watch?v=${video.id.videoId}`} target="none">
+            <h3 className="text-gray-100 text-xl">{video.snippet.title}</h3>
+            <p className="text-gray-400">{video.snippet.description}</p>
+          </a>
+        </div>
+      </div>
+    ))}
+```
+
+You may have noticed for the video display I'm actually rendering `sortedVids`. This
+is because I've got a search input that will allow users of the site to search the videos.
+
+Here's what that code looks like.
+
+```jsx
+  const [searchValue, setSearchValue] = useState("");
+  const sortedVids = videos
+    .sort(
+      (a, b) => Number(new Date(b.snippet.publishedAt)) - Number(new Date(a.snippet.publishedAt)),
+    )
+    .filter((vid) => vid.snippet.title.toLowerCase().includes(searchValue.toLowerCase()));
+```
+
+And here is the completed video page
+
+```jsx
+//pages/video.js
+import Image from "next/image";
+import { useState } from "react";
+
+import OGContainer from "../components/OGContainer";
+import Wrapper from "../components/Wrapper";
+import YoutubeStats from "../components/YoutubeStats";
+import { fetchData } from "../lib/utlis";
+
+export default function Code({ stats, videos }) {
+  const [searchValue, setSearchValue] = useState("");
+  const sortedVids = videos
+    .sort(
+      (a, b) => Number(new Date(b.snippet.publishedAt)) - Number(new Date(a.snippet.publishedAt)),
+    )
+    .filter((vid) => vid.snippet.title.toLowerCase().includes(searchValue.toLowerCase()));
+
+  return (
+    <Wrapper>
+      <OGContainer description="Adam Richardson Youtube Vidoes. Statistics and Search.">
+        <div>
+          <div className="text-gray-300 text-lg">
+            <h1>
+              Videos: Here you can easily find and search all of the videos on my Youtube Channel.
+            </h1>
+          </div>
+
+          <YoutubeStats stats={stats} />
+          <div className="my-4">
+            <label className="text-gray-300 text-sm" htmlFor="videoSearch">
+              Search Youtube Videos
+            </label>
+            <div>
+              <input
+                style={{ caretColor: "white" }}
+                id="videoSearch"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="mt-1 text-gray-200 tracking-wider bg-gray-800 h-10 px-3 shadow-sm focus:ring-indigo-500 focus:outline-none focus:border-gray-400 block w-full border-gray-700 rounded-md"
+                type="text"
+              />
+            </div>
+          </div>
+          {sortedVids &&
+            sortedVids.map((video) => (
+              <div key={video.id.videoId} className="grid grid-cols-3 items-center py-4 gap-4">
+                <div className="hidden sm:col-span-1 sm:flex sm:relative">
+                  <Image
+                    src={video.snippet.thumbnails.medium.url}
+                    width={320}
+                    height={180}
+                    className="absolute rounded-md opacity-50"
+                  />
+                </div>
+                <div className="col-span-3 sm:col-span-2">
+                  <a href={`https://youtube.com/watch?v=${video.id.videoId}`} target="none">
+                    <h3 className="text-gray-100 text-xl">{video.snippet.title}</h3>
+                    <p className="text-gray-400">{video.snippet.description}</p>
+                  </a>
+                </div>
+              </div>
+            ))}
+        </div>
+      </OGContainer>
+    </Wrapper>
+  );
+}
+
+export async function getStaticProps() {
+  const { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } = process.env;
+  const statisticsURL = `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
+  const uploadsURL = `https://youtube.googleapis.com/youtube/v3/search?part=id%2Csnippet&channelId=${YOUTUBE_CHANNEL_ID}&type=video&maxResults=100&key=${YOUTUBE_API_KEY}`;
+
+  async function getData() {
+    const stats = fetchData(statisticsURL);
+    const uploadData = fetchData(uploadsURL);
+
+    return {
+      stats: await stats,
+      uploadData: await uploadData,
+    };
+  }
+
+  const { stats, uploadData } = await getData();
+
+  return {
+    revalidate: 86400,
+    props: {
+      stats: stats.items[0].statistics,
+      videos: uploadData.items,
+    },
+  };
+}
+```

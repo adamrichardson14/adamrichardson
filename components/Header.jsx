@@ -7,10 +7,10 @@ export default function Header() {
     sm:px-6 md:px-8 max-w-2xl mx-auto">
       <div>
         <Link href="/">
-          <a className="text-gray-100 hover:text-gray-300 text-xl">Adam Richardson</a>
+          <a className="text-gray-100 hover:text-gray-300 text-3xl">Adam Richardson</a>
         </Link>
       </div>
-      <div className="text-gray-100">
+      <div className="text-gray-100 text-lg mt-4 sm:mt-0">
         <ul>
           <li className="inline-flex">
             <Link href="/">

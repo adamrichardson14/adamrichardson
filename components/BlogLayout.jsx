@@ -29,12 +29,12 @@ export default function BlogLayout({ children, frontMatter }) {
           <p className="text-sm text-gray-400 min-w-32">{frontMatter.readingTime.text}</p>
         </div>
         {frontMatter.image && (
-          <div className="relative w-full h-[400px] mt-4">
-            <Image className="absolute" src={frontMatter.image} layout="fill" />
+          <div className="mt-4">
+            <Image src={frontMatter.image} width={610} height={400} className="object-cover" />
           </div>
         )}
 
-        <div className="prose prose-dark max-w-none w-full mt-4">{children}</div>
+        <div className="prose prose-xl prose-dark max-w-none w-full mt-4">{children}</div>
       </article>
     </OGContainer>
   );
