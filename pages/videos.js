@@ -1,3 +1,4 @@
+import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -47,7 +48,7 @@ export default function Code({ stats, videos }) {
                     src={video.snippet.thumbnails.medium.url}
                     width={320}
                     height={180}
-                    className="absolute rounded-md opacity-30"
+                    className="absolute rounded-md opacity-50"
                   />
                 </div>
                 <div className="col-span-3 sm:col-span-2">
@@ -65,8 +66,8 @@ export default function Code({ stats, videos }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/youtube`);
-  const youtubeData = await res.json();
+  const res = await axios(`${process.env.NEXT_PUBLIC_URL}/api/youtube`);
+  const youtubeData = await res.data;
   return {
     revalidate: 86400,
     props: {
