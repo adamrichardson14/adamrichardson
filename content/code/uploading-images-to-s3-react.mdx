@@ -1,0 +1,115 @@
+---
+title: 'Uploading Images to Amazon S3 using a Next.js API route and React'
+description: 'Code drop for uploading Images to Amazon S3 using Next.js API route and React using pre-signed URLs'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-03-22'
+---
+
+This code snippet is using a pre-signed URL to upload an image to AWS, and push the link into a DB using Prisma.
+
+### Backend API route code
+
+```ts:/pages/api/awsimageupload.js
+import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../client";
+import { getSession } from "next-auth/client";
+import aws from "aws-sdk";
+
+export default async function (req: NextApiRequest, res: NextApiResponse) {
+  const session = await getSession({ req });
+
+  aws.config.update({
+    region: "eu-west-2",
+    accessKeyId: process.env.AWS_ACCESS_KEYY,
+    secretAccessKey: process.env.AWS_SECRETT
+  });
+
+  const s3Bucket = process.env.AWS_BUCKET;
+
+  const s3 = new aws.S3(); // Create a new instance of S3
+  const fileName = req.body.fileName;
+  const fileType = req.body.fileType;
+
+  console.log(fileName);
+  console.log(fileType);
+
+  const s3Params = {
+    Bucket: s3Bucket,
+    Key: `businesslogos/${fileName}`,
+    ContentType: fileType,
+    ACL: "public-read"
+  };
+
+  try {
+    s3.getSignedUrl("putObject", s3Params, async (err, data) => {
+      if (err) {
+        return res.json({ success: false, error: err });
+      }
+      const returnData = {
+        signedRequest: data,
+        url: `https://${s3Bucket}.s3.amazonaws.com/businesslogos/${fileName}`
+      };
+      const imageUrl = await prisma.user.update({
+        where: {
+          email: session.user.email
+        },
+        data: {
+          business: {
+            update: {
+              businessLogo: returnData.url
+            }
+          }
+        }
+      });
+
+      return res.status(200).json(returnData);
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+}
+```
+
+### Frontend Code
+
+```jsx:/components/dashboard/UploadLogo.tsx
+const handleUpload = ev => {
+let file = uploadInput.current.files[0];
+// Split the filename to get the name and type
+let fileParts = uploadInput.current.files[0].name.split(".");
+let fileName = fileParts[0];
+let fileType = fileParts[1];
+axios
+  .post("/api/awsimageupload", {
+    fileName: fileName,
+    fileType: fileType
+  })
+  .then(res => {
+    const signedRequest = res.data.signedRequest;
+    const url = res.data.url;
+    setUploadState({
+      ...uploadState,
+      url
+    });
+
+    var options = {
+      headers: {
+        "Content-Type": fileType
+      }
+    };
+    axios
+      .put(signedRequest, file, options)
+      .then(_ => {
+        setUploadState({ ...uploadState, success: true });
+        mutate();
+      })
+      .catch(_ => {
+        toast("error", "We could not upload your image");
+      });
+  })
+  .catch(error => {
+    toast("error", "We could not upload your image");
+  });
+};
+```
