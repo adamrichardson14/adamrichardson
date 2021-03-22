@@ -7,6 +7,7 @@ module.exports = {
       colors: {
         teal: colors.teal,
         cyan: colors.cyan,
+        gray: colors.blueGray,
       },
       typography(theme) {
         return {

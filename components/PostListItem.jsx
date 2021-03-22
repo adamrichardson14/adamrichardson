@@ -7,7 +7,7 @@ export default function PostListItem({ data, type }) {
       <div>
         <Link href={`/${type}/${data.slug}`}>
           <a>
-            <h2 className="text-white hover:text-cyan-200 text-3xl transition-colors duration-200">
+            <h2 className="text-white hover:text-cyan-300 text-3xl transition-colors duration-200">
               {data.title}
             </h2>
           </a>

@@ -14,24 +14,25 @@ export default function Code({ posts }) {
     <Wrapper>
       <OGContainer description="The Blog: Occasional educational content. Predominantly ramblings.">
         <div>
-          <div className="text-gray-300 text-lg">
+          <div className="text-2xl font-medium text-gray-300 leading-10">
             <h1>
-              The Blog: Whenever I come across anything useful, I like to write blog posts about it.
-              This helps me to learn and have something to come back to. You may occasionally find
-              something useful here.
+              The Blog: Whenever I come across something useful, I like to write blog posts about
+              it. This helps me to learn and have a reference to come back to. Kind of like taking
+              notes. You may occasionally find something useful here.
             </h1>
           </div>
-          <div className="my-4">
-            <label className="text-gray-300 text-sm" htmlFor="blogPosts">
+          <div className="pt-8 pb-3">
+            <label className="text-cyan-300 text-2xl" htmlFor="blogPosts">
               Search blog posts
             </label>
             <div>
               <input
                 style={{ caretColor: "white" }}
                 id="blogPosts"
+                placeholder="React..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                className="mt-1 text-gray-200 tracking-wider bg-gray-800 h-10 px-3 shadow-sm focus:ring-indigo-500 focus:outline-none focus:border-gray-400 block w-full border-gray-700 rounded-md"
+                className="mt-3 text-gray-200 tracking-wider bg-gray-800 h-10 px-3 shadow-sm focus:ring-indigo-500 focus:outline-none focus:border-gray-400 block w-full border-gray-700 rounded-md"
                 type="text"
               />
             </div>

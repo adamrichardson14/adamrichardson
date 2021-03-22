@@ -15,23 +15,24 @@ export default function Code({ snippets }) {
     <Wrapper>
       <OGContainer>
         <div>
-          <div className="text-gray-300 text-lg">
+          <div className="text-2xl font-medium text-gray-300 leading-10">
             <h1>
               Code Snippets: A place where I will drop my most frequently used code snippets for
-              easy access.
+              easy access. Feel free to use any of the snippets in your own projects.
             </h1>
           </div>
-          <div className="mt-8 mb-2">
-            <label className="text-gray-300 text-sm" htmlFor="searchCode">
+          <div className="my-4 pt-8 pb-3">
+            <label className="text-cyan-300 text-2xl" htmlFor="searchCode">
               Search Code Snippets
             </label>
             <div>
               <input
                 style={{ caretColor: "white" }}
                 id="codeSnippets"
+                placeholder="Youtube..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                className="mt-1 text-gray-200 tracking-wider bg-gray-800 h-10 px-3 shadow-sm focus:ring-indigo-500 focus:outline-none focus:border-gray-400 block w-full border-gray-700 rounded-md"
+                className="mt-3 text-gray-200 tracking-wider bg-gray-800 h-10 px-3 shadow-sm focus:ring-indigo-500 focus:outline-none focus:border-gray-400 block w-full border-gray-700 rounded-md"
                 type="text"
               />
             </div>

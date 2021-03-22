@@ -39,7 +39,7 @@ export default function Home({ posts, snippets, videos }) {
             coding skills to aspiring developers. I run a website design agency and use the projects
             that we are creating as a platform to learn and teach.
           </p>
-          <blockquote className="border-l-8 border-gray-500 pl-4 text-2xl font-medium text-gray-400 mt-4 leading-10 font-mono bg-gray-800 rounded-r-md py-4">
+          <blockquote className="border-l-8 border-cyan-300 pl-4 text-2xl font-medium text-gray-400 mt-4 leading-10 font-mono bg-gray-800 rounded-r-md py-4">
             This website is a hub for my ramblings, educational posts and Youtube content.
           </blockquote>
         </header>

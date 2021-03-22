@@ -11,11 +11,21 @@ pre[class*="language-"] {
 	hyphens: none;
 }
 
-.remark-code-title {
-	@apply text-gray-900 bg-cyan-300 font-semibold py-2 px-4 rounded-t-md font-mono text-lg;
+ .code-title {
+	@apply text-white bg-cyan-600 font-semibold py-2 px-4 rounded-t-md font-mono text-lg flex items-center;
 }
 
-.remark-code-title + pre {
+	.titleOne {
+	 @apply bg-red-400 rounded-full w-3 h-3 flex;
+	}
+	.titleTwo {
+		@apply bg-yellow-400 rounded-full w-3 h-3 flex ml-1.5;
+	 }
+	 .titleThree {
+		@apply bg-green-400 rounded-full w-3 h-3 flex ml-1.5 mr-3;
+	 }
+	 
+.code-title + pre {
   @apply mt-0 rounded-t-none;
 }
 
