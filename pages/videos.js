@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import OGContainer from "../components/OGContainer";
@@ -8,6 +9,17 @@ import { fetchData } from "../lib/utlis";
 
 export default function Code({ stats, videos }) {
   const [searchValue, setSearchValue] = useState("");
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return (
+      <Wrapper>
+        <OGContainer description="Adam Richardson Youtube Vidoes. Statistics and Search.">
+          <h1>Loading...</h1>
+        </OGContainer>
+      </Wrapper>
+    );
+  }
   const sortedVids =
     videos &&
     videos
