@@ -1,0 +1,104 @@
+---
+title: 'All the MDX functionality required for a Blog with JSX components.'
+description: 'Code drop for functionality required to create a Markdown Blog with JSX components.'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-03-22'
+---
+
+```js
+// lib/MDX.js
+import fs from "fs";
+import matter from "gray-matter";
+import mdxPrism from "mdx-prism";
+import renderToString from "next-mdx-remote/render-to-string";
+import path from "path";
+import readingTime from "reading-time";
+
+import MDXComponents from "../components/MDXComponents";
+
+const root = process.cwd();
+
+export async function getFiles(type) {
+  return fs.readdirSync(path.join(root, "content", type));
+}
+
+export async function getFileBySlug(type, slug) {
+  const source = slug
+    ? fs.readFileSync(path.join(root, "content", type, `${slug}.mdx`), "utf8")
+    : fs.readFileSync(path.join(root, "content", `${type}.mdx`), "utf8");
+
+  const { data, content } = matter(source);
+  const mdxSource = await renderToString(content, {
+    components: MDXComponents,
+    mdxOptions: {
+      remarkPlugins: [require("remark-autolink-headings"), require("remark-slug")],
+      rehypePlugins: [mdxPrism],
+    },
+  });
+
+  return {
+    mdxSource,
+    frontMatter: {
+      wordCount: content.split(/\s+/gu).length,
+      readingTime: readingTime(content),
+      slug: slug || null,
+      ...data,
+    },
+  };
+}
+
+export async function getAllFilesFrontMatter(type) {
+  const files = fs.readdirSync(path.join(root, "content", type));
+
+  return files.reduce((allPosts, postSlug) => {
+    const source = fs.readFileSync(path.join(root, "content", type, postSlug), "utf8");
+    const { data } = matter(source);
+
+    return [
+      {
+        ...data,
+        slug: postSlug.replace(".mdx", ""),
+      },
+      ...allPosts,
+    ];
+  }, []);
+}
+```
+
+Create components
+
+```js
+// /components/MDXComponents.js
+
+import Image from "next/image";
+
+const MDXImage = ({ src, alt }) => {
+  return (
+    <div className="relative w-full h-[400px]">
+      <Image alt={alt} src={src} layout="fill" className="object-cover object-center" />
+    </div>
+  );
+};
+
+const MDXComponents = {
+  MDXImage,
+};
+
+export default MDXComponents;
+```
+
+Get all data by type
+
+```js
+
+  const snippets = await getAllFilesFrontMatter("code");
+  const posts = await getAllFilesFrontMatter("post");
+  const orderedSnippets = snippets
+    .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
+    .slice(0, 3);
+  const orderedPosts = posts
+    .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
+    .slice(0, 3);
+```
+

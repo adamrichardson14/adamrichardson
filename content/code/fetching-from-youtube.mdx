@@ -1,0 +1,35 @@
+---
+title: 'Fetching Videos and statistics from Youtube.'
+description: 'Code drop for fetching statistics and videos from Youtube.'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-03-22'
+---
+
+```js
+export async function getStaticProps() {
+  const { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } = process.env;
+  const statisticsURL = `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
+  const uploadsURL = `https://youtube.googleapis.com/youtube/v3/search?part=id%2Csnippet&channelId=${YOUTUBE_CHANNEL_ID}&type=video&maxResults=100&key=${YOUTUBE_API_KEY}`;
+
+  async function getData() {
+    const stats = fetchData(statisticsURL);
+    const uploadData = fetchData(uploadsURL);
+
+    return {
+      stats: await stats,
+      uploadData: await uploadData,
+    };
+  }
+
+  const { stats, uploadData } = await getData();
+
+  return {
+    revalidate: 86400,
+    props: {
+      stats: stats ? stats.items[0].statistics : null,
+      videos: uploadData ? uploadData.items : null,
+    },
+  };
+}
+```
