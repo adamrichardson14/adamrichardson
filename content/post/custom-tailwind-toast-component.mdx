@@ -17,8 +17,7 @@ with this context and you can see there is two actions, "ADD_TOAST" and "DELETE_
 can then easily add new toasts, and delete toasts from anywhere in our application. We're
 going to create a custom hook so that we don't have to use `dispatch()` directly.
 
-```js
-// context/ToastContext.js
+```js:context/ToastContext.js
 import { createContext, useReducer, useContext } from 'react';
 
 const ToastStateContext = createContext({ toasts: [] });
@@ -71,8 +70,7 @@ create a Toast component which is what will be displayed inside the Toast Contai
 
 As you can see, this component is taking in a type and a message and it's configured 
 to take in two types right now. Success and Error.
-```jsx
-// components/Toast.jsx
+```jsx:components/Toast.jsx
 import { useToastDispatchContext } from '../context/ToastContext';
 export default function Toast({ type, message, id }) {
   const dispatch = useToastDispatchContext();
@@ -181,8 +179,7 @@ export default function Toast({ type, message, id }) {
 
 The toast container is positioned absolute and will live at the top of our application.
 
-```jsx
-// components/ToastContainer.jsx
+```jsx:components/ToastContainer.jsx
 
 import Toast from './Toast';
 import { useToastStateContext } from '../context/ToastContext';
@@ -213,9 +210,7 @@ export default function ToastContainer() {
 We're now going to bring all this logic together so that we can use the Toast notifications
 within our application. This is a Next.js application so we're adding our logic to the _app.js file.
 
-```jsx
-// _app.js
-
+```jsx:pages/_app.js
 import 'tailwindcss/tailwind.css';
 import ToastContainer from '../components/ToastContainer';
 import { ToastProvider } from '../context/ToastContext';
@@ -238,9 +233,7 @@ export default MyApp;
 The custom hook will be how we send off notifications. You can see we export a single function from the hook, 
 which is `toast()`. We can now import this anywhere within our application and send off toast notifications.
 
-```js
-// hooks/useToast.js
-
+```js:hooks/useToast.js
 import { useToastDispatchContext } from '../context/ToastContext';
 
 export function useToast(delay) {
@@ -273,8 +266,7 @@ This example is using the toast with a form submission. If you noticed were pass
 a delay to the useToast hook, which is 4 seconds here. This will mean the Toast is
 deleted after 4 seconds.
 
-```jsx
-//index.js
+```jsx:pages/index.js
 import { useToast } from '../hooks/useToast';
 
 export default function Home() {

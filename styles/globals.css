@@ -1,18 +1,9 @@
 code[class*="language-"],
 pre[class*="language-"] {
-	color: #f8f8f2;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-	font-family: Consolas, Monaco, 'Andale Mono', monospace;
-	direction: ltr;
-	text-align: left;
-	white-space: pre;
-	word-spacing: normal;
-	word-break: normal;
-	line-height: 1.5;
-
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
-	tab-size: 4;
+	@apply text-gray-200 rounded-md;
+	-moz-tab-size: 2;
+	-o-tab-size: 2;
+	tab-size: 2;
 
 	-webkit-hyphens: none;
 	-moz-hyphens: none;
@@ -20,12 +11,21 @@ pre[class*="language-"] {
 	hyphens: none;
 }
 
+.remark-code-title {
+	@apply text-gray-900 bg-cyan-300 font-semibold py-2 px-4 rounded-t-md font-mono text-lg;
+}
+
+.remark-code-title + pre {
+  @apply mt-0 rounded-t-none;
+}
+
+
+
 /* Code blocks */
 pre[class*="language-"] {
 	padding: 1em;
-	margin: .5em 0;
+	margin: 0;
 	overflow: auto;
-	border-radius: 0.3em;
 }
 
 :not(pre) > code[class*="language-"],
@@ -36,7 +36,6 @@ pre[class*="language-"] {
 /* Inline code */
 :not(pre) > code[class*="language-"] {
 	padding: .1em;
-	border-radius: .3em;
 }
 
 .token.comment,

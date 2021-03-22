@@ -26,8 +26,7 @@ npm i typescript @types/react @types/node
 ```
 
 Setup your App.tsx
-```jsx
-// /pages/_app.tsx
+```jsx:/pages/_app.tsx
 import type { AppProps /*, AppContext */ } from 'next/app';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
@@ -42,8 +41,7 @@ npm i -D --dev eslint @typescript-eslint/parser  @typescript-eslint/eslint-plugi
 ```
 
 Create an `eslintrc.js` file.
-```js
-// .eslintrc.js
+```js:.eslintrc.js
 module.exports = {
   root: true,
   env: {
@@ -91,8 +89,7 @@ module.exports = {
 }
 ```
 Create a `.prettierrc.js` file.
-```js
-// .prettierrc.js
+```js:.prettierrc.js
 module.exports = {
   semi: true,
   trailingComma: 'es5',

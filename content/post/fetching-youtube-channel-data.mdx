@@ -30,9 +30,7 @@ I've created a function which will use axios to handle the fetching.
 npm i axios
 ```
 
-```js
-// lib/utils
-
+```js:lib/utils
 import axios from "axios";
 
 export const fetchData = async (url) => {
@@ -100,9 +98,7 @@ meaning that we don't have to wait for one to finish before starting the next.
 Here is the completed `getStaticProps()` call. This happens on the server so we don't need to worry about the API
 key being exposed to the client.
 
-```js
-// pages/video.js
-
+```js:pages/video.js
 export async function getStaticProps() {
   const { YOUTUBE_API_KEY, YOUTUBE_CHANNEL_ID } = process.env;
   const statisticsURL = `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
@@ -136,9 +132,7 @@ I'm using Tailwindcss to style this website.
 ### Statistics display
 
 
-```jsx
-// pages/video.js
-
+```jsx:pages/video.js
 <YoutubeStats stats={stats} />
 
 // components/YoutubeStats.jsx
@@ -169,9 +163,7 @@ export default function YoutubeStats({ stats }) {
 
 ### Video display
 
-```jsx
-// pages/video.js
-
+```jsx:pages/video.js
   {sortedVids &&
     sortedVids.map((video) => (
       <div key={video.id.videoId} className="grid grid-cols-3 items-center py-4 gap-4">
@@ -209,8 +201,7 @@ Here's what that code looks like.
 
 And here is the completed video page
 
-```jsx
-//pages/video.js
+```jsx:pages/video.js
 import Image from "next/image";
 import { useState } from "react";
 
