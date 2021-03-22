@@ -12,7 +12,7 @@ pre[class*="language-"] {
 }
 
  .code-title {
-	@apply text-white bg-cyan-600 font-semibold py-2 px-4 rounded-t-md font-mono text-lg flex items-center;
+	@apply text-white bg-cyan-600 font-semibold py-2 px-4 rounded-t-md font-mono text-sm sm:text-lg flex items-center;
 }
 
 	.titleOne {
