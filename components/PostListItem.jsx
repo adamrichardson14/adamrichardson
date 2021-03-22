@@ -9,6 +9,7 @@ export default function PostListItem({ data, type }) {
           <div>
             <h2 className="text-3xl">{data.title}</h2>
             <p className="text-gray-400">{data.description}</p>
+            <p className="text-sm text-gray-400">{new Date(data.published).toDateString()}</p>
           </div>
         </div>
       </a>

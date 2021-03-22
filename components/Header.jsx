@@ -10,7 +10,7 @@ export default function Header() {
           <a className="text-gray-100 hover:text-gray-300 text-3xl">Adam Richardson</a>
         </Link>
       </div>
-      <div className="text-gray-100 text-lg mt-4 sm:mt-0">
+      <nav className="text-gray-100 text-lg mt-4 sm:mt-0">
         <ul>
           <li className="inline-flex">
             <Link href="/">
@@ -38,7 +38,7 @@ export default function Header() {
             </Link>
           </li>
         </ul>
-      </div>
+      </nav>
     </div>
   );
 }

@@ -8,11 +8,13 @@ import { fetchData } from "../lib/utlis";
 
 export default function Code({ stats, videos }) {
   const [searchValue, setSearchValue] = useState("");
-  const sortedVids = videos
-    .sort(
-      (a, b) => Number(new Date(b.snippet.publishedAt)) - Number(new Date(a.snippet.publishedAt)),
-    )
-    .filter((vid) => vid.snippet.title.toLowerCase().includes(searchValue.toLowerCase()));
+  const sortedVids =
+    videos &&
+    videos
+      .sort(
+        (a, b) => Number(new Date(b.snippet.publishedAt)) - Number(new Date(a.snippet.publishedAt)),
+      )
+      .filter((vid) => vid.snippet.title.toLowerCase().includes(searchValue.toLowerCase()));
 
   return (
     <Wrapper>
@@ -23,8 +25,7 @@ export default function Code({ stats, videos }) {
               Videos: Here you can easily find and search all of the videos on my Youtube Channel.
             </h1>
           </div>
-
-          <YoutubeStats stats={stats} />
+          {stats && <YoutubeStats stats={stats} />}
           <div className="my-4">
             <label className="text-gray-300 text-sm" htmlFor="videoSearch">
               Search Youtube Videos
@@ -86,8 +87,8 @@ export async function getStaticProps() {
   return {
     revalidate: 86400,
     props: {
-      stats: stats.items[0].statistics,
-      videos: uploadData.items,
+      stats: stats ? stats.items[0].statistics : null,
+      videos: uploadData ? uploadData.items : null,
     },
   };
 }
