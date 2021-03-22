@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import Image from "next/image";
 
+import GradientHeadingText from "../components/GradientHeadingText";
 import OGContainer from "../components/OGContainer";
 import PostListItem from "../components/PostListItem";
 import Wrapper from "../components/Wrapper";
@@ -12,9 +13,9 @@ export default function Home({ posts, snippets, videos }) {
     <Wrapper>
       <OGContainer
         description="Adam Richardson - Fullstack website developer and course
-      creator from the UK">
-        <header>
-          <div className="grid grid-cols-5">
+        creator from the UK">
+        <header className="">
+          <div className="grid grid-cols-5 mt-4">
             <div className="col-span-5 sm:col-span-4 flex items-center">
               <h1 className="text-5xl font-extrabold text-white tracking-tight sm:text-6xl">
                 Hi, I'm Adam Richardson.{" "}
@@ -29,7 +30,7 @@ export default function Home({ posts, snippets, videos }) {
                 alt="Photo of Adam Richardson"
                 width={320}
                 height={320}
-                className="rounded-full"
+                className="rounded-full shadow"
               />
             </div>
           </div>
@@ -38,19 +39,20 @@ export default function Home({ posts, snippets, videos }) {
             coding skills to aspiring developers. I run a website design agency and use the projects
             that we are creating as a platform to learn and teach.
           </p>
-          <blockquote className="border-l-4 border-gray-500 pl-4 text-2xl font-medium text-gray-400 mt-4 leading-10 font-mono">
+          <blockquote className="border-l-8 border-gray-500 pl-4 text-2xl font-medium text-gray-400 mt-4 leading-10 font-mono bg-gray-800 rounded-r-md py-4">
             This website is a hub for my ramblings, educational posts and Youtube content.
           </blockquote>
         </header>
         <main>
-          <h2 className="text-2xl font-bold leading-7 text-white sm:text-3xl mt-24 underline">
-            Recent Blog Posts
-          </h2>
+          <div className="mt-24">
+            <GradientHeadingText text="Recent Blog Posts" />
+          </div>
           {posts && posts.map((post) => <PostListItem type="blog" key={post.slug} data={post} />)}
+
           {videos && (
-            <h2 className="text-2xl font-bold leading-7 text-white sm:text-3xl mt-24 underline">
-              Recent Youtube Videos
-            </h2>
+            <div className="mt-24">
+              <GradientHeadingText text="Recent Youtube Videos" />
+            </div>
           )}
 
           {videos &&
@@ -74,9 +76,7 @@ export default function Home({ posts, snippets, videos }) {
               </div>
             ))}
           <div className="mt-24 mb-16">
-            <h2 className="text-2xl font-bold leading-7 text-white sm:text-3xl underline">
-              Recent Code Snippets
-            </h2>
+            <GradientHeadingText text="Recent Code Snippets" />
             {snippets &&
               snippets.map((snippet) => (
                 <PostListItem type="code" key={snippet.slug} data={snippet} />
