@@ -24,13 +24,17 @@ export async function getFiles(type) {
 }
 
 export async function getFileBySlug(type, slug) {
-  const source = fs.readFileSync(path.join(root, "content", type, `${slug}.mdx`), "utf8");
+  const src = fs.readFileSync(path.join(root, "content", type, `${slug}.mdx`), "utf8");
 
-  const { data, content } = matter(source);
+  const { data, content } = matter(src);
   const mdxSource = await renderToString(content, {
     components: MDXComponents,
     mdxOptions: {
-      remarkPlugins: [require("remark-autolink-headings"), require("remark-slug")],
+      remarkPlugins: [
+        require("../lib/codeTitles"),
+        require("remark-autolink-headings"),
+        require("remark-slug"),
+      ],
       rehypePlugins: [mdxPrism],
     },
   });
@@ -39,7 +43,7 @@ export async function getFileBySlug(type, slug) {
     mdxSource,
     frontMatter: {
       readingTime: readingTime(content),
-      slug: slug || null,
+      slug: slug,
       ...data,
     },
   };
@@ -48,19 +52,21 @@ export async function getFileBySlug(type, slug) {
 export async function getAllFilesFrontMatter(type) {
   const files = fs.readdirSync(path.join(root, "content", type));
 
-  return files.reduce((allPosts, postSlug) => {
-    const source = fs.readFileSync(path.join(root, "content", type, postSlug), "utf8");
-    const { data } = matter(source);
+  const filesFrontMatter = [];
 
-    return [
-      {
-        ...data,
-        slug: postSlug.replace(".mdx", ""),
-      },
-      ...allPosts,
-    ];
-  }, []);
+  files.forEach((file) => {
+    console.log("FILE ", file);
+    const src = fs.readFileSync(path.join(root, "content", type, file), "utf8");
+    const { data } = matter(src);
+
+    filesFrontMatter.push({
+      ...data,
+      slug: file.replace(".mdx", ""),
+    });
+  });
+  return filesFrontMatter;
 }
+
 ```
 
 Create components

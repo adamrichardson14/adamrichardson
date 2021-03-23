@@ -2,8 +2,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 export default function Container(props) {
-  // After mounting, we have access to the theme
-
   const { children, ...customMeta } = props;
   const router = useRouter();
   const meta = {
