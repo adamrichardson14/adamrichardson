@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import InformationBlob from "./InformationBlob";
+
 const MDXImage = ({ src, alt }) => {
   return (
     <div className="relative w-full h-[400px]">
@@ -10,6 +12,7 @@ const MDXImage = ({ src, alt }) => {
 
 const MDXComponents = {
   MDXImage,
+  InformationBlob,
 };
 
 export default MDXComponents;
