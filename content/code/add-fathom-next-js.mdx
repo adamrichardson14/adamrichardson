@@ -1,0 +1,48 @@
+---
+title: 'Add Fathom analtics to Next.js website'
+description: 'Code for adding Fathom to Next.js website'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-03-24'
+---
+
+```js:/hooks/useFathom.js
+import * as Fathom from "fathom-client";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+export const useFathom = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") {
+      Fathom.load(process.env.NEXT_PUBLIC_FATHOM_ID, {
+        includedDomains: ["adamrichardson.dev"],
+      });
+    }
+
+    function onRouteChangeComplete() {
+      Fathom.trackPageview();
+    }
+
+    router.events.on("routeChangeComplete", onRouteChangeComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", onRouteChangeComplete);
+    };
+  }, [router.events]);
+};
+```
+
+```js:/pages/_app.js
+import { useFathom } from "../hooks/useFathom";
+
+function MyApp({ Component, pageProps }) {
+  useFathom();
+  return (
+      <Component {...pageProps} />
+  );
+}
+
+export default MyApp;
+```
