@@ -12,7 +12,9 @@ export default function Blog({ mdxSource, frontMatter }) {
 
   return (
     <Wrapper>
-      <BlogLayout frontMatter={frontMatter}>{content}</BlogLayout>
+      <BlogLayout reading displayDate frontMatter={frontMatter}>
+        {content}
+      </BlogLayout>
     </Wrapper>
   );
 }
