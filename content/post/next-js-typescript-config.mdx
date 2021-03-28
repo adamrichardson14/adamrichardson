@@ -48,56 +48,54 @@ module.exports = {
     node: true,
     es6: true,
   },
-  parserOptions: { ecmaVersion: 8 }, 
-  ignorePatterns: ['node_modules/*', '.next/*', '.out/*', '!.prettierrc.js'], 
-  extends: ['eslint:recommended'],
+  parserOptions: { ecmaVersion: 8 },
+  ignorePatterns: ["node_modules/*", ".next/*", ".out/*", "!.prettierrc.js"],
+  extends: ["eslint:recommended"],
   overrides: [
-    
     {
-      files: ['**/*.ts', '**/*.tsx'],
-      parser: '@typescript-eslint/parser',
-      settings: { react: { version: 'detect' } },
+      files: ["**/*.ts", "**/*.tsx"],
+      parser: "@typescript-eslint/parser",
+      settings: { react: { version: "detect" } },
       env: {
         browser: true,
         node: true,
         es6: true,
       },
       extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:react/recommended', 
-        'plugin:react-hooks/recommended',
-        'plugin:jsx-a11y/recommended', 
-        'plugin:prettier/recommended', 
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:prettier/recommended",
       ],
       rules: {
-        'react/prop-types': 'off',
-        'react/react-in-jsx-scope': 'off',
-        'jsx-a11y/anchor-is-valid': 'off',
-        '@typescript-eslint/no-unused-vars': ['error'],
-        'prettier/prettier': ['error', {}, { usePrettierrc: true }],
-        '@typescript-eslint/explicit-function-return-type': [
-          'warn',
-          {
-            allowExpressions: true,
-            allowConciseArrowFunctionExpressionsStartingWithVoid: true,
-          },
-        ],
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "@typescript-eslint/no-unused-vars": ["error"],
+        "prettier/prettier": ["error", {}, { usePrettierrc: true }],
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "react/no-unescaped-entities": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-namespace": "off"
       },
     },
   ],
-}
+};
+
 ```
-Create a `.prettierrc.js` file.
-```js:.prettierrc.js
-module.exports = {
-  semi: true,
-  trailingComma: 'es5',
-  singleQuote: true,
-  printWidth: 100,
-  tabWidth: 2,
-  useTabs: false,
-  endOfLine: 'auto'
+Create a `.prettierrc` file.
+```js:.prettierrc
+{
+  "semi": true,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "jsxBracketSameLine": true,
+  "endOfLine": "auto"
 }
 ```
 
@@ -115,7 +113,7 @@ We already installed Husky as a dev dependency, so lets initialise it.
 ```bash
 npx husky init
 ```
-This will create a pre-commit hook inside of the `.husky` folder. Remove it.
+This will create a pre-commit hook inside of the `.husky` folder. Remove this pre-commit example.
 
 Update `package.json` with the following scripts.
 ```json:package.json
@@ -124,14 +122,14 @@ Update `package.json` with the following scripts.
     "build": "next build",
     "start": "next start",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
-    "lint": "eslint --ext js,jsx,ts,tsx --fix",
+    "lint": "eslint --ext js,jsx,ts,tsx --fix .",
   },
 ```
 
 Add the pre-commit hook to Husky using our scripts.
 
 ```bash
-npx husky add .husky/pre-commit "yarn type-check && yarn lint ."
+npx husky add .husky/pre-commit "npm run type-check && npm run lint ."
 ```
 
 You're now good to go. If you followed all the steps correctly you will have an awesome setup for working in a Next.js project. 
