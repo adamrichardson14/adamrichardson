@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Header() {
+  const router = useRouter();
+  const { pathname } = router;
   return (
     <div
       className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-8 pb-14 px-4
@@ -14,27 +17,62 @@ export default function Header() {
         <ul>
           <li className="inline-flex">
             <Link href="/">
-              <a className="hover:text-cyan-300">Home</a>
+              <a
+                className={`${
+                  pathname === "/"
+                    ? "text-cyan-300 hover:text-cyan-400"
+                    : "text-gray-100 hover:text-cyan-300 "
+                }`}>
+                Home
+              </a>
             </Link>
           </li>
           <li className="inline-flex ml-3">
             <Link href="/blog">
-              <a className="hover:text-cyan-300">Blog</a>
+              <a
+                className={`${
+                  pathname === "/blog"
+                    ? "text-cyan-300 hover:text-cyan-400"
+                    : "text-gray-100 hover:text-cyan-300 "
+                }`}>
+                Blog
+              </a>
             </Link>
           </li>
           <li className="inline-flex ml-3">
             <Link href="/code">
-              <a className="hover:text-cyan-300">Snippets</a>
+              <a
+                className={`${
+                  pathname === "/code"
+                    ? "text-cyan-300 hover:text-cyan-400"
+                    : "text-gray-100 hover:text-cyan-300 "
+                }`}>
+                Snippets
+              </a>
             </Link>
           </li>
           <li className="inline-flex ml-3">
             <Link href="/about">
-              <a className="hover:text-cyan-300">About</a>
+              <a
+                className={`${
+                  pathname === "/about"
+                    ? "text-cyan-300 hover:text-cyan-400"
+                    : "text-gray-100 hover:text-cyan-300 "
+                }`}>
+                About
+              </a>
             </Link>
           </li>
           <li className="inline-flex ml-3">
             <Link href="/videos">
-              <a className="hover:text-cyan-300">Videos</a>
+              <a
+                className={`${
+                  pathname === "/videos"
+                    ? "text-cyan-300 hover:text-cyan-400"
+                    : "text-gray-100 hover:text-cyan-300 "
+                }`}>
+                Videos
+              </a>
             </Link>
           </li>
         </ul>
