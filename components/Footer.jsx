@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <div className="my-10">
       <Socials center="center" />
-      <nav className="-mx-5 -my-2 mt-4 flex flex-wrap justify-center" aria-label="Footer">
+      <nav className="mt-4 flex flex-wrap justify-center" aria-label="Footer">
         <div className="px-5 py-2">
           <Link href="/">
             <a className="text-base text-gray-300 hover:text-cyan-300">Home</a>
