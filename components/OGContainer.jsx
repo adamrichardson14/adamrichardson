@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-export default function Container(props) {
+export default function OGContainer(props) {
   const { children, ...customMeta } = props;
   const router = useRouter();
   const meta = {
