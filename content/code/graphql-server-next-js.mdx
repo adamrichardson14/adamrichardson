@@ -1,0 +1,76 @@
+---
+title: 'Graphql Server in Next.js Route'
+description: 'Code drop for creating a graphql server in a Next.js Application route.'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-05-04'
+---
+
+
+
+```js:/pages/api/graphql
+import { gql, ApolloServer } from "apollo-server-micro";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+const typeDefs = gql`
+  type Card {
+    id: Int!
+    name: String!
+    email: String!
+    phone: String!
+    website: String!
+  }
+
+  input CardInput {
+    name: String!
+    email: String!
+    phone: String!
+    website: String!
+  }
+
+  type Query {
+    getCards: [Card]
+  }
+
+  type Mutation {
+    addCard(input: CardInput!): Card!
+  }
+`;
+
+const resolvers = {
+  Query: {
+    getCards: () => {
+      return prisma.card.findMany({
+        take: 10,
+      });
+    },
+  },
+  Mutation: {
+    addCard: async (_, args ) => {
+      console.log(args);
+      return await prisma.card.create({
+        data: args.input
+      });
+    },
+  },
+};
+
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+const handler = apolloServer.createHandler({
+  path: "/api/graphql",
+});
+
+export default handler;
+```
