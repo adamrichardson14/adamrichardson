@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
+import GradientHeadingText from "../components/GradientHeadingText";
 import OGContainer from "../components/OGContainer";
 import Wrapper from "../components/Wrapper";
 import YoutubeStats from "../components/YoutubeStats";
@@ -32,13 +33,13 @@ export default function Code({ stats, videos }) {
     <Wrapper>
       <OGContainer description="Adam Richardson Youtube Vidoes. Statistics and Search.">
         <div>
-          <div className="text-2xl font-medium text-gray-300 leading-10">
-            <h1>Videos: Find and search all of the videos on my Youtube Channel.</h1>
+          <div className="body-text">
+            <h1>Find and search all of the videos on my Youtube Channel.</h1>
           </div>
           {stats && <YoutubeStats stats={stats} />}
-          <div className="my-4 pt-8 pb-3">
-            <label className="text-cyan-300 text-2xl" htmlFor="videoSearch">
-              Search Youtube Videos
+          <div className="my-4 py-8">
+            <label htmlFor="videoSearch">
+              <GradientHeadingText text="Search Youtube Videos" />
             </label>
             <div>
               <input
@@ -54,23 +55,27 @@ export default function Code({ stats, videos }) {
           </div>
           {sortedVids &&
             sortedVids.map((video) => (
-              <div key={video.id.videoId} className="grid grid-cols-3 items-center py-4 gap-4">
-                <div className="hidden sm:col-span-1 sm:flex sm:relative">
-                  <Image
-                    src={video.snippet.thumbnails.medium.url}
-                    width={320}
-                    height={180}
-                    alt={video.snippet.title}
-                    className="absolute rounded-md opacity-50"
-                  />
+              <>
+                <div
+                  key={video.id.videoId}
+                  className="grid grid-cols-3 items-center py-8 gap-4  border-b-2 border-gray-800">
+                  <div className="hidden sm:col-span-1 sm:flex sm:relative">
+                    <Image
+                      src={video.snippet.thumbnails.medium.url}
+                      width={320}
+                      height={180}
+                      alt={video.snippet.title}
+                      className="absolute rounded-md"
+                    />
+                  </div>
+                  <div className="col-span-3 sm:col-span-2">
+                    <a href={`https://youtube.com/watch?v=${video.id.videoId}`} target="none">
+                      <h2 className="title-text">{video.snippet.title}</h2>
+                    </a>
+                  </div>
                 </div>
-                <div className="col-span-3 sm:col-span-2">
-                  <a href={`https://youtube.com/watch?v=${video.id.videoId}`} target="none">
-                    <h2 className="text-gray-100 text-xl">{video.snippet.title}</h2>
-                    <p className="text-gray-400">{video.snippet.description}</p>
-                  </a>
-                </div>
-              </div>
+                <p className="description-text">{video.snippet.description}</p>
+              </>
             ))}
         </div>
       </OGContainer>

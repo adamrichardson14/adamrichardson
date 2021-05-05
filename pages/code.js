@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import GradientHeadingText from "../components/GradientHeadingText";
 import OGContainer from "../components/OGContainer";
 import PostListItem from "../components/PostListItem";
 import Wrapper from "../components/Wrapper";
@@ -15,15 +16,15 @@ export default function Code({ snippets }) {
     <Wrapper>
       <OGContainer>
         <div>
-          <div className="text-2xl font-medium text-gray-300 leading-10">
-            <h1>
+          <div>
+            <h1 className="body-text">
               Code Snippets: A place where I will drop my most frequently used code snippets for
               easy access. Feel free to use any of the snippets in your own projects.
             </h1>
           </div>
           <div className="my-4 pt-8 pb-3">
-            <label className="text-cyan-300 text-2xl" htmlFor="searchCode">
-              Search Code Snippets
+            <label htmlFor="codeSnippets">
+              <GradientHeadingText text="Search code snippets" />
             </label>
             <div>
               <input

@@ -9,6 +9,9 @@ module.exports = {
         cyan: colors.cyan,
         gray: colors.blueGray,
       },
+      fontFamily: {
+        sans: "Inter",
+      },
       typography(theme) {
         return {
           dark: {

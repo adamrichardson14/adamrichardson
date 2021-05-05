@@ -15,65 +15,62 @@ export default function Home({ posts, snippets, videos }) {
         description="Adam Richardson - Fullstack website developer and course
         creator from the UK">
         <header className="">
-          <div className="grid grid-cols-5 mt-4">
-            <div className="col-span-5 sm:col-span-4 flex items-center">
-              <h1 className="text-5xl font-extrabold text-white tracking-tight sm:text-6xl">
-                Hi, I'm Adam Richardson.{" "}
-                <span className="inline-block" role="img" aria-label="Hand Wave Emoji">
-                  ✋
-                </span>
+          <div className="mt-4">
+            <div className="flex items-center">
+              <h1 className="text-6xl font-extrabold text-white tracking-tight sm:text-8xl">
+                Hi, I'm Adam Richardson.
               </h1>
             </div>
-            <div className="col-span-5 sm:col-span-1 h-40 w-40 sm:h-full mt-8 sm:mt-0 sm:w-full pr-4 flex items-center pt-3">
-              <Image
-                src={"/images/me.png"}
-                alt="Photo of Adam Richardson"
-                width={320}
-                height={320}
-                className="rounded-full shadow"
-              />
-            </div>
           </div>
-          <p className="text-2xl font-medium text-gray-300 mt-8 leading-10">
+          <p className="body-text mt-8 leading-10">
             I'm a fullstack developer and course creator, passionate about teaching real world
             coding skills to aspiring developers. I run a website design agency and use the projects
             that we are creating as a platform to learn and teach.
           </p>
-          <blockquote className="border-l-8 border-cyan-300 pl-4 text-2xl font-medium text-gray-400 mt-4 leading-10 font-mono bg-gray-800 rounded-r-md py-4">
-            This website is a hub for my ramblings, educational posts and Youtube content.
-          </blockquote>
+          <div className="grid grid-cols-3 border-l-8 border-cyan-300 bg-gray-800 rounded-r-md py-4 mt-8 relative">
+            <div className="col-span-3 sm:col-span-2 pl-4 text-2xl font-medium text-gray-400 leading-10 font-mono ">
+              This website is a hub for my ramblings, educational posts and Youtube content.
+            </div>
+            <div className="absolute right-0 -top-2 hidden sm:flex">
+              <Image src="/images/me.png" height={170} width={170} className="rounded-full" />
+            </div>
+          </div>
         </header>
         <main>
-          <div className="mt-24">
+          <div className="mt-40">
             <GradientHeadingText text="Recent Blog Posts" />
           </div>
           {posts && posts.map((post) => <PostListItem type="blog" key={post.slug} data={post} />)}
 
           {videos && (
-            <div className="mt-24">
+            <div className="mt-40">
               <GradientHeadingText text="Recent Youtube Videos" />
             </div>
           )}
 
           {videos &&
             videos.map((video) => (
-              <div key={video.id.videoId} className="grid grid-cols-3 items-center py-4 gap-4">
-                <div className="hidden sm:col-span-1 sm:flex sm:relative">
-                  <Image
-                    src={video.snippet.thumbnails.medium.url}
-                    width={320}
-                    height={180}
-                    alt={video.snippet.title}
-                    className="absolute rounded-md opacity-50"
-                  />
+              <>
+                <div
+                  key={video.id.videoId}
+                  className="grid grid-cols-3 items-center py-8 gap-4  border-b-2 border-gray-800">
+                  <div className="hidden sm:col-span-1 sm:flex sm:relative">
+                    <Image
+                      src={video.snippet.thumbnails.medium.url}
+                      width={320}
+                      height={180}
+                      alt={video.snippet.title}
+                      className="absolute rounded-md"
+                    />
+                  </div>
+                  <div className="col-span-3 sm:col-span-2">
+                    <a href={`https://youtube.com/watch?v=${video.id.videoId}`} target="none">
+                      <h2 className="title-text">{video.snippet.title}</h2>
+                    </a>
+                  </div>
                 </div>
-                <div className="col-span-3 sm:col-span-2">
-                  <a href={`https://youtube.com/watch?v=${video.id.videoId}`} target="none">
-                    <h2 className="text-gray-100 text-xl">{video.snippet.title}</h2>
-                    <p className="text-gray-400">{video.snippet.description}</p>
-                  </a>
-                </div>
-              </div>
+                <p className="description-text">{video.snippet.description}</p>
+              </>
             ))}
           <div className="mt-24 mb-16">
             <GradientHeadingText text="Recent Code Snippets" />
@@ -96,10 +93,10 @@ export const getStaticProps = async () => {
   const posts = await getAllFilesFrontMatter("post");
   const orderedSnippets = snippets
     .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
-    .slice(0, 3);
+    .slice(0, 5);
   const orderedPosts = posts
     .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
-    .slice(0, 3);
+    .slice(0, 5);
   const uploadData = await fetchData(uploadsURL);
   const orderedVideos = uploadData
     ? uploadData.items
@@ -107,7 +104,7 @@ export const getStaticProps = async () => {
           (a, b) =>
             Number(new Date(b.snippet.publishedAt)) - Number(new Date(a.snippet.publishedAt)),
         )
-        .slice(0, 3)
+        .slice(0, 5)
     : null;
 
   return {

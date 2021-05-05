@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import GradientHeadingText from "../components/GradientHeadingText";
 import OGContainer from "../components/OGContainer";
 import PostListItem from "../components/PostListItem";
 import Wrapper from "../components/Wrapper";
@@ -14,16 +15,16 @@ export default function Code({ posts }) {
     <Wrapper>
       <OGContainer description="The Blog: Occasional educational content. Predominantly ramblings.">
         <div>
-          <div className="text-2xl font-medium text-gray-300 leading-10">
-            <h1>
-              The Blog: Whenever I come across something useful, I like to write blog posts about
-              it. This helps me to learn and have a reference to come back to. Kind of like taking
-              notes. You may occasionally find something useful here.
+          <div>
+            <h1 className="body-text">
+              Whenever I come across something useful, I like to write blog posts about it. This
+              helps me to learn and have a reference to come back to. Kind of like taking notes. You
+              may occasionally find something useful here.
             </h1>
           </div>
-          <div className="pt-8 pb-3">
-            <label className="text-cyan-300 text-2xl" htmlFor="blogPosts">
-              Search blog posts
+          <div className="py-8">
+            <label htmlFor="blogPosts">
+              <GradientHeadingText text="Search blog posts" />
             </label>
             <div>
               <input

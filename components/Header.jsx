@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <div
       className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-8 pb-14 px-4
-    sm:px-6 md:px-8 max-w-2xl mx-auto">
+    sm:px-6 md:px-8 max-w-3xl mx-auto">
       <div>
         <Link href="/">
           <a className="text-gray-100 hover:text-cyan-300 text-3xl">Adam Richardson</a>

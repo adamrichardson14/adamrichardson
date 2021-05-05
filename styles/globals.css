@@ -11,6 +11,18 @@ pre[class*="language-"] {
 	hyphens: none;
 }
 
+.body-text {
+	@apply text-2xl leading-9 text-gray-200;
+}
+
+.title-text {
+	@apply text-white hover:text-cyan-300 text-3xl font-bold transition-colors duration-200;
+}
+
+.description-text {
+	@apply text-2xl leading-9 mt-1 text-gray-400;
+}
+
  .code-title {
 	@apply text-white bg-cyan-600 font-semibold py-2 px-4 rounded-t-md font-mono text-sm sm:text-lg flex items-center;
 }
@@ -120,3 +132,4 @@ pre[class*="language-"] {
 .token.entity {
 	cursor: help;
 }
+
