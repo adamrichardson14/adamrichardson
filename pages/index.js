@@ -5,6 +5,7 @@ import GradientHeadingText from "../components/GradientHeadingText";
 import OGContainer from "../components/OGContainer";
 import PostListItem from "../components/PostListItem";
 import Wrapper from "../components/Wrapper";
+import me from "../public/images/me.png";
 import { getAllFilesFrontMatter } from "../lib/mdx";
 import { fetchData } from "../lib/utlis";
 
@@ -32,7 +33,7 @@ export default function Home({ posts, snippets, videos }) {
               This website is a hub for my ramblings, educational posts and Youtube content.
             </div>
             <div className="absolute right-0 -top-2 hidden sm:flex">
-              <Image src="/images/me.png" height={170} width={170} className="rounded-full" alt="Picture of Adam Richardson"/>
+              <Image src={me} height={170} width={170} className="rounded-full" alt="Picture of Adam Richardson" placeholder="blur" />
             </div>
           </div>
         </header>
