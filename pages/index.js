@@ -33,7 +33,7 @@ export default function Home({ posts, snippets, videos }) {
               This website is a hub for my ramblings, educational posts and Youtube content.
             </div>
             <div className="absolute right-0 -top-2 hidden sm:flex">
-              <Image src={me} height={170} width={170} className="rounded-full" alt="Picture of Adam Richardson" placeholder="blur" />
+              <Image src={me} height={170} width={170} className="rounded-full" alt="Adam Richardson portrait" placeholder="blur" />
             </div>
           </div>
         </header>
