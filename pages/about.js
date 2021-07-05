@@ -29,6 +29,21 @@ export default function About() {
               </p>
             </div>
             <div className="mt-24">
+              <GradientHeadingText text="Business" />
+            </div>
+            <div className="prose prose-2xl prose-dark">
+              <p>
+                I run a development agency{" "}
+                <a href="https://zoeble.com" target="_blank" rel="noopener noreferrer">
+                  Zoeble Website Design and Development.
+                </a>
+              </p>
+              <p>
+                Lots of the projects that you see on my Youtube channel will be based from work that
+                we are doing in the agency.
+              </p>
+            </div>
+            <div className="mt-24">
               <GradientHeadingText text="Stack" />
             </div>
             <div className="prose prose-2xl prose-dark">
