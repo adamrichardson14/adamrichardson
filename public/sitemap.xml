@@ -29,14 +29,6 @@
   </url>
 
   <url>
-    <loc>https://adamrichardson.dev//privacy</loc>
-  </url>
-
-  <url>
-    <loc>https://adamrichardson.dev//services</loc>
-  </url>
-
-  <url>
     <loc>https://adamrichardson.dev/code/add-fathom-next-js</loc>
   </url>
 
@@ -65,6 +57,14 @@
   </url>
 
   <url>
+    <loc>https://adamrichardson.dev//privacy</loc>
+  </url>
+
+  <url>
+    <loc>https://adamrichardson.dev//services</loc>
+  </url>
+
+  <url>
     <loc>https://adamrichardson.dev/post/custom-tailwind-toast-component</loc>
   </url>
 
@@ -74,5 +74,9 @@
 
   <url>
     <loc>https://adamrichardson.dev/post/next-js-typescript-config</loc>
+  </url>
+
+  <url>
+    <loc>https://adamrichardson.dev/post/nextjs-data-fetching-methods-explained</loc>
   </url>
 </urlset>

@@ -10,7 +10,8 @@ export default function Code({ posts }) {
   const [searchValue, setSearchValue] = useState("");
   const blogPosts = posts
     .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
-    .filter((post) => post.title.toLowerCase().includes(searchValue.toLowerCase()));
+    .filter((post) => post.title.toLowerCase().includes(searchValue.toLowerCase()))
+    .reverse();
   return (
     <Wrapper>
       <OGContainer description="The Blog: Occasional educational content. Predominantly ramblings.">

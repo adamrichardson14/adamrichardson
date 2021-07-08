@@ -1,0 +1,70 @@
+---
+title: "Next.js Data Fetching Methods Explained"
+description: "All of the data fetching methods Next.js has to offer, explained. When to use different data fetching methods in Next.js."
+category: "development"
+author: "Adam Richardson"
+published: "2021-03-20"
+---
+
+<InformationBlob
+  content="There are many different ways of fetching data with Next.js and that's what makes it so powerful. In this
+post we will go through the different options, and when to use each one. "
+/>
+
+## Introduction to why this is important
+
+The consideration of course is going to be the best performance and the best experience for your users, so choosing the right way to bring in data is important.
+
+- It's important to understand all of the different options available to you and
+  when to utilise which method of data fetching.
+- The beauty of Next.js is that you can use all the data fetching methods in a single
+  application if there is scope for it.
+
+Think of a large SAAS application. The will have marketing pages, a blog, a dashboard and maybe even an online store. We would make use of all Next.js data fetching methods in order to give the best experience for each part of the website. Marketing pages and a blog we would make static, our dashboard 
+could be client side behind a login wall and our store could be server side rendered.
+
+## Normal React Data fetching... (Client side)
+
+You don't need to use any data fetching methods that Next.js provides. You can
+make use of other great Next.js features, as part of a normal React style application. 
+Maybe you just want to use the router and next/image but use normal react data fetching methods. The data fetching is what makes Next.js great and 
+you usually would want to make use of them in almost all websites.
+
+For example, if you're building a data driven dashboard in react, maybe you
+want to use normal react lifecycle methods to perform data fetching, as SEO will not be important. Of course, this is talking about the dashboard section
+of your website, as you would want to have your marketing pages statically generated.
+
+The one thing I would call out is that you should make use of either useSWR or react-query to assist with your data 
+fetching.
+
+## Static site generation (SSG)
+
+If your site can be made static, it's safe to say it's best to do so. This will give the best performance for the user. Next.js will usually perform all the data fetching at build time, generating static HTML files that will be delivered from the server. 
+
+The only time you wouldn't want to do everything at build time is if your website has hundreds or thousands of pages to be generated. This would make
+your build times long. It's personal preference as to the amount of pages you will generate in advance, but if you wanted to keep the speedy builds, 
+you can use fallback routes. This will mean that the pages are generated the first time a user would visit them on your website.
+
+The only real downside to not generating everything in advance is that one user
+will experience a loading state while the data fetch occurs and you have to account for
+this in your code.
+
+### Lists / Scrolling / Pagination
+If you were displaying a list of blog posts as an example, you could statically generate page 1 of the first 10 posts, and then take over with client side data fetching to infinitely scroll or paginate the data. This method works well and gives a good user experience. You could also handle pages in your routes if you would prefer and in the blog example, maybe you would have your posts structured like `/blog/posts/1` `/blog/posts/2` for each page of data, and these could be statically built.
+
+---
+
+## Incremental static generation (ISR)
+
+This is an amazing way to have a static website but also keep the data relatively up to date. You declare a time interval and the data is re-fetched after that time interval. Let's say you have a blog and you want to keep the home page up to date with your most recent posts. You will set the time interval to one hour. After every hour, the first user to visit the site will see the static page from the most recent fetch, and trigger the page to be rebuilt in the background when the newest data has been fetched. This ensure up to date data but keeps the benefits of a static website.
+
+## Server side rendering (SSR)
+You would use SSR when it's extremely important for the data to always be upto date, but you also want the benefits of serving your site from the server, such as SEO.
+
+An example of this may be an online store. You would want prices, discounts etc on the frontend to always match the backend, so you will make the data fetch on every request. It would be really bad if you had a store, changed a price in your CMS but this wasn't immediately reflected to the next visitor in the frontend. Your frontend would not match the backend and it's important in this scenario that it does. Server side rendering is a great use case for this because we keep the benefits of the HTML being served from the server, but also make the request to the backend on every page load.
+
+Just a call out that nothing will be displayed on screen until the data has been fetched so it's important that your backend can support the traffic from your website.
+
+## Summary
+
+In summary, statically generate when you can. Incrementally regenerate to keep your data fresh where you need to. Use server side rendering when you always need the data to be upto date but you still care about SEO. 
