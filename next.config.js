@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ["images.unsplash.com", "upload.wikimedia.org", "i.ytimg.com"],
+    domains: ["images.unsplash.com", "upload.wikimedia.org", "i.ytimg.com", "media.graphcms.com"],
   },
   webpack: (config, { isServer }) => {
     if (isServer) {

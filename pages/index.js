@@ -24,28 +24,35 @@ export default function Home({ posts, snippets, videos }) {
             </div>
           </div>
           <p className="body-text mt-8 leading-10">
-            I'm a fullstack developer and course creator, passionate about teaching real world
+            I'm a fullstack developer and course creator. I'm passionate about teaching real world
             coding skills to aspiring developers. I run a website design agency and use the projects
-            that we are creating as a platform to learn and teach.
+            that we're working on as inspiration for my courses/videos.
           </p>
           <div className="grid grid-cols-3 border-l-8 border-cyan-300 bg-gray-800 rounded-r-md py-4 mt-8 relative">
             <div className="col-span-3 sm:col-span-2 pl-4 text-2xl font-medium text-gray-400 leading-10 font-mono ">
-              This website is a hub for my ramblings, educational posts and Youtube content.
+              The website is my place for blog posts, code snippets and Youtube content.
             </div>
             <div className="absolute right-0 -top-2 hidden sm:flex">
-              <Image src={me} height={170} width={170} className="rounded-full" alt="Adam Richardson portrait" placeholder="blur" />
+              <Image
+                src={me}
+                height={170}
+                width={170}
+                className="rounded-full"
+                alt="Adam Richardson portrait"
+                placeholder="blur"
+              />
             </div>
           </div>
         </header>
         <main>
           <div className="mt-40">
-            <GradientHeadingText text="Recent Blog Posts" />
+            <GradientHeadingText text="Blog Posts" />
           </div>
           {posts && posts.map((post) => <PostListItem type="blog" key={post.slug} data={post} />)}
 
           {videos && (
             <div className="mt-40">
-              <GradientHeadingText text="Recent Youtube Videos" />
+              <GradientHeadingText text="Youtube Videos" />
             </div>
           )}
 
@@ -74,7 +81,7 @@ export default function Home({ posts, snippets, videos }) {
               </>
             ))}
           <div className="mt-24 mb-16">
-            <GradientHeadingText text="Recent Code Snippets" />
+            <GradientHeadingText text="Code Snippets" />
             {snippets &&
               snippets.map((snippet) => (
                 <PostListItem type="code" key={snippet.slug} data={snippet} />
@@ -98,7 +105,7 @@ export const getStaticProps = async () => {
   const orderedPosts = posts
     .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
     .slice(0, 5)
-    .reverse()
+    .reverse();
   const uploadData = await fetchData(uploadsURL);
   const orderedVideos = uploadData
     ? uploadData.items
