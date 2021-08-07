@@ -4,11 +4,11 @@ import Image from "next/image";
 import GradientHeadingText from "../components/GradientHeadingText";
 import OGContainer from "../components/OGContainer";
 import PostListItem from "../components/PostListItem";
+import Socials from "../components/Socials";
 import Wrapper from "../components/Wrapper";
-import me from "../public/images/me.png";
 import { getAllFilesFrontMatter } from "../lib/mdx";
 import { fetchData } from "../lib/utlis";
-import Socials from "../components/Socials";
+import me from "../public/images/me.png";
 
 export default function Home({ posts, snippets, videos }) {
   return (
