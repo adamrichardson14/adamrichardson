@@ -75,18 +75,6 @@ export default function Header() {
               </a>
             </Link>
           </li>
-          <li className="inline-flex ml-3">
-            <Link href="/gallery">
-              <a
-                className={`${
-                  pathname === "/gallery"
-                    ? "text-cyan-300 hover:text-cyan-400"
-                    : "text-gray-100 hover:text-cyan-300 "
-                }`}>
-                Gallery
-              </a>
-            </Link>
-          </li>
         </ul>
       </nav>
     </div>

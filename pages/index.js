@@ -8,6 +8,7 @@ import Wrapper from "../components/Wrapper";
 import me from "../public/images/me.png";
 import { getAllFilesFrontMatter } from "../lib/mdx";
 import { fetchData } from "../lib/utlis";
+import Socials from "../components/Socials";
 
 export default function Home({ posts, snippets, videos }) {
   return (
@@ -22,6 +23,7 @@ export default function Home({ posts, snippets, videos }) {
                 Hi, I'm Adam Richardson.
               </h1>
             </div>
+            <Socials />
           </div>
           <p className="body-text mt-8 leading-10">
             I'm a fullstack developer and course creator. I'm passionate about teaching real world
