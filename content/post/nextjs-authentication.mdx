@@ -123,20 +123,34 @@ code from Next-auth documentation.
 
 ```js:pages/index.js
 
-import { getSession, signIn, signOut } from "next-auth/client";
-<>
+import { signIn, signOut, useSession } from "next-auth/client"
+
+const [session, loading] = useSession()
+
   {!session && (
     <>
-      Not signed in <br /> <button onClick={() => signIn()}>Sign in</button>
+      {" "}
+      Not signed in <br /> <button onClick={() => signIn()}>Sign in</button>{" "}
+    </>
+  )}{" "}
+  {session && (
+    <>
+      {" "}
+      Signed in as {session.user.email} <br />{" "}
+      <button onClick={() => signOut()}>Sign out</button>{" "}
     </>
   )}
-  {session && (
-  <>
-    Signed in as {session.user.email} <br />
-    <button onClick={() => signOut()}>Sign out</button>
-  </>
-  )}
-</>
+
+```
+
+```js:pages/_app.js
+import { Provider } from "next-auth/client"
+
+export default function App({ Component, pageProps }) {
+  return (
+    <Provider session={pageProps.session}>
+          <Component {...pageProps} />
+    </Provider>  )}
 ```
 
 Authentication in an API route?
