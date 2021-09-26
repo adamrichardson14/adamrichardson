@@ -1,0 +1,156 @@
+---
+title: "Next.js Authentication with next-auth and Prisma"
+description: "Learn how to setup a Next.js application with authentication using next-auth."
+category: "development"
+author: "Adam Richardson"
+published: "2021-09-26"
+image: "https://images.unsplash.com/photo-1618044619888-009e412ff12a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400"
+---
+
+The first thing to do is to create a brand new Next.js application. We will create
+ours using the Tailwindcss example, so we don't need to configure that.
+
+```
+npx create-next-app --with-example tailwindcss test-auth
+```
+
+We will now need to install the dependencies that we need.
+
+```
+npm install @prisma/client @next-auth/prisma-adapter@canary next-auth
+```
+
+```
+npm install prisma --save-dev
+```
+
+Now we will create the authentication route. Create the following new file and add these contents.
+
+```js:pages/api/auth/[...nextauth].js
+
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
+import NextAuth from "next-auth";
+import Providers from "next-auth/providers";
+const prisma = new PrismaClient();
+export default NextAuth({
+  providers: [
+    Providers.Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
+  adapter: PrismaAdapter(prisma),
+});
+```
+
+Run the following command
+
+```
+npx prisma init
+```
+
+Let's create the Schema that next-auth needs. Notice we have chosen SQLITE as our
+database. Inside your prisma folder, create a file called `db.db`
+
+```js:/prisma/schema.prisma
+datasource db {
+  provider = "sqlite"
+  url      = "file:db.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+  @@unique([providerId, providerAccountId])
+  }
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+  }
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  }
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@unique([identifier, token])
+  }
+```
+
+Now our authentication is almost good to go. We need to run our database migration.
+
+```
+npx prisma migrate dev --name "Add authentication"
+```
+
+We can now start using our authentication on the front end of our website. Here is the example
+code from Next-auth documentation.
+
+```js:pages/index.js
+
+import { getSession, signIn, signOut } from "next-auth/client";
+<>
+  {!session && (
+    <>
+      Not signed in <br /> <button onClick={() => signIn()}>Sign in</button>
+    </>
+  )}
+  {session && (
+  <>
+    Signed in as {session.user.email} <br />
+    <button onClick={() => signOut()}>Sign out</button>
+  </>
+  )}
+</>
+```
+
+Authentication in an API route?
+
+```js:pages/api/createprofile
+import { getSession } from "next-auth/client";
+
+export default async function (req, res) {
+const session = await getSession({ req });
+
+if (!session) {
+  return res.status(401);
+}
+
+// Do authenticated stuff here...
+}
+```

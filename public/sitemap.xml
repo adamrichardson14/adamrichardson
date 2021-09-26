@@ -13,10 +13,6 @@
   </url>
 
   <url>
-    <loc>https://adamrichardson.dev/gallery</loc>
-  </url>
-
-  <url>
     <loc>https://adamrichardson.dev</loc>
   </url>
 
@@ -30,6 +26,14 @@
 
   <url>
     <loc>https://adamrichardson.dev/videos</loc>
+  </url>
+
+  <url>
+    <loc>https://adamrichardson.dev//privacy</loc>
+  </url>
+
+  <url>
+    <loc>https://adamrichardson.dev//services</loc>
   </url>
 
   <url>
@@ -53,19 +57,15 @@
   </url>
 
   <url>
+    <loc>https://adamrichardson.dev/code/prefetch-and-pagination-graphql-nextjs</loc>
+  </url>
+
+  <url>
     <loc>https://adamrichardson.dev/code/tailwindcss-dark-prose</loc>
   </url>
 
   <url>
     <loc>https://adamrichardson.dev/code/uploading-images-to-s3-react</loc>
-  </url>
-
-  <url>
-    <loc>https://adamrichardson.dev//privacy</loc>
-  </url>
-
-  <url>
-    <loc>https://adamrichardson.dev//services</loc>
   </url>
 
   <url>
@@ -78,6 +78,10 @@
 
   <url>
     <loc>https://adamrichardson.dev/post/next-js-typescript-config</loc>
+  </url>
+
+  <url>
+    <loc>https://adamrichardson.dev/post/nextjs-authentication</loc>
   </url>
 
   <url>

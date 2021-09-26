@@ -106,8 +106,8 @@ export const getStaticProps = async () => {
     .slice(0, 5);
   const orderedPosts = posts
     .sort((a, b) => Number(new Date(b.published)) - Number(new Date(a.published)))
-    .slice(0, 5)
-    .reverse();
+    .slice(0, 5);
+
   const uploadData = await fetchData(uploadsURL);
   const orderedVideos = uploadData
     ? uploadData.items
