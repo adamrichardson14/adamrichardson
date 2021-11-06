@@ -1,0 +1,118 @@
+---
+title: 'Next.js Eslint configuration with vscode'
+description: 'Learn how to configure ESLint with vscode for usage with Next.js'
+category: 'development'
+author: 'Adam Richardson'
+published: '2021-11-06'
+image: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80'
+---
+
+### Install Dependecies
+
+```
+npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-plugin-sort-keys-fix
+```
+
+### Add Linting scripts
+```
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint.fix": "next lint --fix"
+  },
+```
+
+### Add .eslintrc
+
+```js:/.eslintrc
+{
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "eslint:all",
+    "plugin:react/all",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "env": {
+    "browser": true,
+    "es2020": true,
+    "node": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "quotes": ["error", "double"],
+    "semi": ["error", "always"],
+    "linebreak-style": 0,
+    "func-style": 0,
+    "class-methods-use-this": 0,
+    "sort-keys-fix/sort-keys-fix": "warn",
+    "max-len": 0,
+    "no-magic-numbers": 0,
+    "max-lines-per-function": 0,
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "function-call-argument-newline": 0,
+    "padded-blocks": 0,
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+      {
+        "blankLine": "any",
+        "prev": ["const", "let", "var"],
+        "next": ["const", "let", "var"]
+      }
+    ],
+    "object-curly-spacing": ["error", "always"],
+    "one-var": ["error", "never"],
+    "quote-props": 0,
+    "react/prop-types": 0,
+    "react/jsx-indent": [2, 2],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-filename-extension": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-no-literals": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-max-depth": 0,
+    "react/jsx-newline": 0,
+    "react/jsx-props-no-spreading": 0
+  },
+  "plugins": [
+    "sort-keys-fix"
+  ],
+  "ignorePatterns": ["node_modules/", ".next/"]
+}
+```
+
+### Ensure code action is to fix all errors on save
+
+```json:/.vscode/settings.json
+{
+  "workbench.colorCustomizations": {
+    "titleBar.activeForeground": "#fff",
+    "titleBar.inactiveForeground": "#ffffffcc",
+    "titleBar.activeBackground": "#2cff37",
+    "titleBar.inactiveBackground": "#2cff37"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+}
+
+```
