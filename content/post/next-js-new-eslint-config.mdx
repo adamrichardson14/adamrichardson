@@ -10,7 +10,7 @@ image: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?ixid=MnwxMj
 ### Install Dependecies
 
 ```
-npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-plugin-sort-keys-fix
+npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-plugin-sort-keys-fix eslint-plugin-simple-import-sort
 ```
 
 ### Add Linting scripts
@@ -49,15 +49,23 @@ npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-
     }
   },
   "rules": {
-    "indent": ["error", 2],
+    "indent": 0,
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
+    "sort-imports": 0,
     "linebreak-style": 0,
+    "multiline-ternary": 0,
+    "require-await": 0,
     "func-style": 0,
     "class-methods-use-this": 0,
     "sort-keys-fix/sort-keys-fix": "warn",
     "max-len": 0,
     "no-magic-numbers": 0,
+    "react/forbid-component-props": 0,
+    "react/jsx-wrap-multilines": 0,
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "no-ternary": 0,
     "max-lines-per-function": 0,
     "space-before-function-paren": [
       "error",
@@ -83,7 +91,7 @@ npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-
     "one-var": ["error", "never"],
     "quote-props": 0,
     "react/prop-types": 0,
-    "react/jsx-indent": [2, 2],
+    "react/jsx-indent": 0,
     "react/jsx-indent-props": [2, 2],
     "react/jsx-filename-extension": 0,
     "react/react-in-jsx-scope": 0,
@@ -91,13 +99,16 @@ npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-
     "react/jsx-one-expression-per-line": 0,
     "react/jsx-max-depth": 0,
     "react/jsx-newline": 0,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-closing-tag-location": 0
   },
   "plugins": [
-    "sort-keys-fix"
+    "sort-keys-fix", 
+    "simple-import-sort"
   ],
   "ignorePatterns": ["node_modules/", ".next/"]
 }
+
 ```
 
 ### Ensure code action is to fix all errors on save
