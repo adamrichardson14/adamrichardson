@@ -26,7 +26,7 @@ npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-
 
 ### Add .eslintrc
 
-```js:/.eslintrc
+```json:/.eslintrc
 {
   "extends": [
     "next",
@@ -100,7 +100,17 @@ npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-
     "react/jsx-max-depth": 0,
     "react/jsx-newline": 0,
     "react/jsx-props-no-spreading": 0,
-    "react/jsx-closing-tag-location": 0
+    "react/jsx-closing-tag-location": 0,
+    "react/no-multi-comp": 0,
+    "array-element-newline": 0,
+    "react/jsx-max-props-per-line": 0,
+    "no-extra-parens": 0,
+    "object-property-newline": 0,
+    "react/jsx-no-bind": 0,
+    "new-cap": 0,
+    "react/style-prop-object": 0,
+    "dot-location": 0,
+    "no-trailing-spaces": 0
   },
   "plugins": [
     "sort-keys-fix", 
@@ -108,6 +118,7 @@ npm i eslint eslint-config-next eslint-plugin-import eslint-plugin-react eslint-
   ],
   "ignorePatterns": ["node_modules/", ".next/"]
 }
+
 
 ```
 

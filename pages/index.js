@@ -8,7 +8,7 @@ import Socials from "../components/Socials";
 import Wrapper from "../components/Wrapper";
 import { getAllFilesFrontMatter } from "../lib/mdx";
 import { fetchData } from "../lib/utlis";
-import me from "../public/images/me.png";
+import me from "../public/images/adam_richardson_image.jpg";
 
 export default function Home({ posts, snippets, videos }) {
   return (
@@ -27,12 +27,13 @@ export default function Home({ posts, snippets, videos }) {
           </div>
           <p className="body-text mt-8 leading-10">
             I'm a fullstack developer and course creator. I'm passionate about teaching real world
-            coding skills to aspiring developers. I run a website design agency and use the projects
-            that we're working on as inspiration for my courses/videos.
+            coding skills to aspiring developers. I work as a Business Intelligence Design Lead and
+            lead a website design/development company.
           </p>
           <div className="grid grid-cols-3 border-l-8 border-cyan-300 bg-gray-800 rounded-r-md py-4 mt-8 relative">
             <div className="col-span-3 sm:col-span-2 pl-4 text-2xl font-medium text-gray-400 leading-10 font-mono ">
-              The website is my place for blog posts, code snippets and Youtube content.
+              The website is my place for blog posts, code snippets that I will reuse, and Youtube
+              content.
             </div>
             <div className="absolute right-0 -top-2 hidden sm:flex">
               <Image
